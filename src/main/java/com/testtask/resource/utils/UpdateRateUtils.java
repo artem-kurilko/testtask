@@ -1,17 +1,14 @@
 package com.testtask.resource.utils;
 
+import com.testtask.model.BankName;
 import com.testtask.model.Currency;
 import com.testtask.model.Rate;
 import com.testtask.service.RateService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-
-import static com.testtask.model.BankName.mono;
 
 @Component
 public class UpdateRateUtils {
@@ -22,7 +19,7 @@ public class UpdateRateUtils {
         UpdateRateUtils.rateService = rateService;
     }
 
-    public static boolean isRateUpdated(List<Rate> rates, Date date, float price, Currency currency) {
+    public static boolean isRateUpdated(List<Rate> rates, Date date, float price, Currency currency, BankName bankName) {
         Rate dbRate = rates.stream().filter(rate -> rate.getDate().equals(date)).findAny().orElse(null);
 
         if (dbRate == null) {
@@ -30,7 +27,7 @@ public class UpdateRateUtils {
                     .price(price)
                     .symbol(currency)
                     .date(date)
-                    .bankName(mono)
+                    .bankName(bankName)
                     .build();
             rateService.saveRate(rate);
         } return true;

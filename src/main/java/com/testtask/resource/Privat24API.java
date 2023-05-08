@@ -22,8 +22,8 @@ import static com.testtask.resource.utils.UpdateRateUtils.isRateUpdated;
 
 @Component
 public class Privat24API implements ExchangeAPI {
-    private final String pattern = "dd.MM.yyyy";
-    private final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    private static final String pattern = "dd.MM.yyyy";
+    private static final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
     private static final int MAX_AMOUNT_OF_DAYS_TO_STORE = 31;
     private final RateService rateService;
 
@@ -44,7 +44,6 @@ public class Privat24API implements ExchangeAPI {
         List<Rate> usdRates = rateService.findRatesByNameAndExchange(USD, privat24);
         List<Rate> eurRates = rateService.findRatesByNameAndExchange(EUR, privat24);
 
-        outerloop:
         for (int i = MAX_AMOUNT_OF_DAYS_TO_STORE; i > 0; i--) {
             String link = url + getDateParameter(i);
             JSONObject response = new JSONObject(sendRequest(link));
@@ -55,19 +54,19 @@ public class Privat24API implements ExchangeAPI {
                 if (cur.getString("currency").equals(USD.name())){
                     Date date = sdf.parse(getDateParameter(i));
                     float price = cur.getFloat("purchaseRateNB");
-                    usdUpdated = isRateUpdated(usdRates, date, price, USD);
+                    usdUpdated = isRateUpdated(usdRates, date, price, USD, privat24);
                 } else if (cur.getString("currency").equals(EUR.name())) {
                     Date date = sdf.parse(getDateParameter(i));
                     float price = cur.getFloat("purchaseRateNB");
-                    eurUpdated = isRateUpdated(eurRates, date, price, EUR);
+                    eurUpdated = isRateUpdated(eurRates, date, price, EUR, privat24);
                 }
                 if (usdUpdated && eurUpdated)
-                    break outerloop;
+                    break;
             }
         }
     }
 
-    private String getDateParameter(int minusDaysCount) {
+    private static String getDateParameter(int minusDaysCount) {
         LocalDate ld = LocalDate.now().minusDays(minusDaysCount);
         Date startDate = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return sdf.format(startDate);

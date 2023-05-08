@@ -22,7 +22,7 @@ public class ExchangeRateSchedulerService {
         this.privat24API = privat24API;
     }
 
-    @Scheduled(cron = "0 0 */1 * * *") //every hour
+    @Scheduled(cron = "0 * * * * *") //every minute
     public void scheduleExchangeRateUpdate() {
         log.info("Updating database...");
         monobankAPI.updateRates();

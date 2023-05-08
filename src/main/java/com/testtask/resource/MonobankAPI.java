@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -44,15 +43,15 @@ public class MonobankAPI implements ExchangeAPI{
         for (int i = 0; i < response.length(); i++) {
             JSONObject cur = response.getJSONObject(i);
             if (cur.getInt("currencyCodeA") == USD_CODE) {
-                Timestamp ts = new Timestamp(cur.getLong("date"));
-                Date date = new Date(ts.getTime());
+                long ts = cur.getLong("date") * 1000;
+                Date date = new Date(ts);
                 float price = cur.getFloat("rateBuy");
-                usdUpdated = isRateUpdated(usdRates, date, price, USD);
+                usdUpdated = isRateUpdated(usdRates, date, price, USD, mono);
             } else if (cur.getInt("currencyCodeA") == EUR_CODE) {
-                Timestamp ts = new Timestamp(cur.getLong("date"));
-                Date date = new Date(ts.getTime());
+                long ts = cur.getLong("date") * 1000;
+                Date date = new Date(ts);
                 float price = cur.getFloat("rateBuy");
-                eurUpdated = isRateUpdated(eurRates, date, price, EUR);
+                eurUpdated = isRateUpdated(eurRates, date, price, EUR, mono);
             }
             if (usdUpdated && eurUpdated)
                 break;

@@ -63,7 +63,7 @@ public class GovbankAPI implements ExchangeAPI {
             String exchangedate = cur.getString("exchangedate");
             Date date = formatter.parse(exchangedate);
             float price = cur.getFloat("rate");
-            isRateUpdated(rates, date, price, currency);
+            isRateUpdated(rates, date, price, currency, govbank);
         }
     }
 
