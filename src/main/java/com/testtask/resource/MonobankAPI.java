@@ -1,6 +1,5 @@
 package com.testtask.resource;
 
-import com.testtask.model.Currency;
 import com.testtask.model.Rate;
 import com.testtask.service.RateService;
 import org.json.JSONArray;
@@ -16,6 +15,7 @@ import static com.testtask.model.BankName.mono;
 import static com.testtask.model.Currency.EUR;
 import static com.testtask.model.Currency.USD;
 import static com.testtask.resource.utils.RequestProcessor.sendRequest;
+import static com.testtask.resource.utils.UpdateRateUtils.isRateUpdated;
 
 @Component
 public class MonobankAPI implements ExchangeAPI{
@@ -43,31 +43,20 @@ public class MonobankAPI implements ExchangeAPI{
 
         for (int i = 0; i < response.length(); i++) {
             JSONObject cur = response.getJSONObject(i);
-
             if (cur.getInt("currencyCodeA") == USD_CODE) {
-                usdUpdated = isRateUpdated(usdRates, cur, USD);
+                Timestamp ts = new Timestamp(cur.getLong("date"));
+                Date date = new Date(ts.getTime());
+                float price = cur.getFloat("rateBuy");
+                usdUpdated = isRateUpdated(usdRates, date, price, USD);
             } else if (cur.getInt("currencyCodeA") == EUR_CODE) {
-                eurUpdated = isRateUpdated(eurRates, cur, EUR);
+                Timestamp ts = new Timestamp(cur.getLong("date"));
+                Date date = new Date(ts.getTime());
+                float price = cur.getFloat("rateBuy");
+                eurUpdated = isRateUpdated(eurRates, date, price, EUR);
             }
             if (usdUpdated && eurUpdated)
                 break;
         }
     }
 
-    private boolean isRateUpdated(List<Rate> rates, JSONObject cur, Currency currency) {
-        Timestamp ts = new Timestamp(cur.getLong("date"));
-        Date date = new Date(ts.getTime());
-        Rate dbRate = rates.stream().filter(rate -> rate.getDate().equals(date)).findAny().orElse(null);
-
-        if (dbRate == null) {
-            float price = cur.getFloat("rateBuy");
-            Rate rate = Rate.builder()
-                    .price(price)
-                    .symbol(currency)
-                    .date(date)
-                    .bankName(mono)
-                    .build();
-            rateService.saveRate(rate);
-        } return true;
-    }
 }

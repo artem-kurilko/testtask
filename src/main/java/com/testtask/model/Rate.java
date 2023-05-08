@@ -5,19 +5,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
+@Table
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rate {
-    public float price;
     @Id
+    @Column
     public Currency symbol;
-    public transient Date date;
-    public transient BankName bankName;
+    @Column
+    public float price;
+    @Column
+    public Date date;
+    @Column
+    public BankName bankName;
 }
