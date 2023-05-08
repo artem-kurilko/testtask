@@ -1,11 +1,23 @@
 package com.testtask.model;
 
-public class Rate {
-    public float rate;
-    public String symbol;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public Rate(float rate, String symbol) {
-        this.rate = rate;
-        this.symbol = symbol;
-    }
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Date;
+
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Rate {
+    public float price;
+    @Id
+    public Currency symbol;
+    public transient Date date;
+    public transient BankName bankName;
 }

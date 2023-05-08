@@ -2,6 +2,7 @@ package com.testtask.controller;
 
 import com.testtask.model.Exchange;
 import com.testtask.resource.ExchangeRateFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +13,17 @@ import java.util.List;
 
 @RestController
 public class CurrenciesRateController {
+    private final ExchangeRateFactory exchangeRateFactory;
+
+    @Autowired
+    public CurrenciesRateController(ExchangeRateFactory exchangeRateFactory) {
+        this.exchangeRateFactory = exchangeRateFactory;
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Exchange>> getAvgRates() {
-        List<Exchange> currenciesRates = ExchangeRateFactory.getAllCurrencies();
+        List<Exchange> currenciesRates = exchangeRateFactory.getAllCurrencies();
         return new ResponseEntity<>(currenciesRates, HttpStatus.OK);
     }
-
-   /* @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAvgRates(@RequestParam(value="startDate")@DateTimeFormat(pattern="MMddyyyy") Date startDate,
-                                              @RequestParam(value="toDate")@DateTimeFormat(pattern="MMddyyyy") Date toDate) {
-
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }*/
 
 }

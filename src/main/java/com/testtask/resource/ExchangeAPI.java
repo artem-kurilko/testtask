@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface ExchangeAPI {
 
-    List<Rate> getCurrencies();
+    List<Rate> getRates();
+
+    void updateRates();
+
 }

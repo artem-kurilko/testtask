@@ -3,12 +3,14 @@ package com.testtask.resource;
 import com.testtask.model.Rate;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static com.testtask.resource.utils.RequestProcessor.sendRequest;
 
+@Component
 public class Privat24API implements ExchangeAPI {
 
     @Override
