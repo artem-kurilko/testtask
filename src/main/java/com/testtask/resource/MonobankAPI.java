@@ -31,6 +31,11 @@ public class MonobankAPI implements ExchangeAPI{
     }
 
     @Override
+    public List<Rate> getRatesByDate(Date startDate, Date finishDate) {
+        return rateService.findRatedByPeriodAndExchange(startDate, finishDate, mono);
+    }
+
+    @Override
     public void updateRates() {
         final String url = "https://api.monobank.ua/bank/currency";
         final int USD_CODE = 840, EUR_CODE = 978, HRV_CODE = 980;

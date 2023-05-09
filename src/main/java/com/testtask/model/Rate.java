@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table
@@ -30,4 +29,5 @@ public class Rate {
     @JsonIgnore
     @Column
     public BankName bankName;
+
 }

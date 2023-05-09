@@ -44,9 +44,13 @@ public class ExchangeRateFactory {
         Date start = sdf.parse(startDate);
         Date finish = sdf.parse(finishDate);
 
-        // we store date in yyyy-mm-dd
+        List<Rate> monoRates = monobankAPI.getRatesByDate(start, finish);
+        List<Rate> govbankRates = govbankAPI.getRatesByDate(start, finish);
+        List<Rate> privat24Rates = privat24API.getRatesByDate(start, finish);
 
-        return null;
+        return List.of(new Exchange("monobank", monoRates),
+                new Exchange("govbank", govbankRates),
+                new Exchange("privat24", privat24Rates));
     }
 
 }

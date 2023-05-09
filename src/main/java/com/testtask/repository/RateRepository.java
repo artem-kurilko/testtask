@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface RateRepository extends JpaRepository<Rate, String> {
 
-    List<Rate> findAllByBankName(BankName bank);
+    List<Rate> findAllByBankName(BankName bankName);
 
     List<Rate> findAllBySymbolAndBankName(Currency currency, BankName bankName);
 

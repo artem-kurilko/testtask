@@ -37,6 +37,11 @@ public class Privat24API implements ExchangeAPI {
         return rateService.findRatesByDateAndExchange(date, privat24);
     }
 
+    @Override
+    public List<Rate> getRatesByDate(Date startDate, Date finishDate) {
+        return rateService.findRatedByPeriodAndExchange(startDate, finishDate, privat24);
+    }
+
     @SneakyThrows
     @Override
     public void updateRates() {
