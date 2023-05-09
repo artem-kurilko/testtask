@@ -26,7 +26,7 @@ public class Rate {
     @Column
     public float price;
     @Column
-    public Date date;
+    public String date;
     @JsonIgnore
     @Column
     public BankName bankName;

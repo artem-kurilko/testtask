@@ -9,8 +9,6 @@ public interface ExchangeAPI {
 
     List<Rate> getTodayRates(Date date);
 
-    List<Rate> getRates();
-
     void updateRates();
 
 }

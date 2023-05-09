@@ -7,6 +7,8 @@ import com.testtask.repository.RateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -23,15 +25,13 @@ public class RateService {
         rateRepository.save(rate);
     }
 
-    public List<Rate> findRatesByExchange(BankName bankName) {
-        return rateRepository.findAllByBankName(bankName);
-    }
-
     public List<Rate> findRatesByNameAndExchange(Currency currency, BankName exchange) {
         return rateRepository.findAllBySymbolAndBankName(currency, exchange);
     }
 
     public List<Rate> findRatesByDateAndExchange(Date date, BankName bankName) {
-        return rateRepository.findRatesByDateAndBankName(date, bankName);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(date);
+        return rateRepository.findRatesByDateAndBankName(dateStr, bankName);
     }
 }

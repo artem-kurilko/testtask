@@ -6,7 +6,6 @@ import com.testtask.model.Rate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -16,6 +15,6 @@ public interface RateRepository extends JpaRepository<Rate, String> {
 
     List<Rate> findAllBySymbolAndBankName(Currency currency, BankName bankName);
 
-    List<Rate> findRatesByDateAndBankName(Date date, BankName bankName);
+    List<Rate> findRatesByDateAndBankName(String date, BankName bankName);
 
 }

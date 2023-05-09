@@ -31,15 +31,9 @@ public class MonobankAPI implements ExchangeAPI{
     }
 
     @Override
-    public List<Rate> getRates() {
-        return rateService.findRatesByExchange(mono);
-    }
-
-    @Override
     public void updateRates() {
         final String url = "https://api.monobank.ua/bank/currency";
-        final int USD_CODE = 840;
-        final int EUR_CODE = 978;
+        final int USD_CODE = 840, EUR_CODE = 978, HRV_CODE = 980;
         JSONArray response = new JSONArray(sendRequest(url));
         List<Rate> usdRates = rateService.findRatesByNameAndExchange(USD, mono);
         List<Rate> eurRates = rateService.findRatesByNameAndExchange(EUR, mono);
@@ -47,12 +41,12 @@ public class MonobankAPI implements ExchangeAPI{
 
         for (int i = 0; i < response.length(); i++) {
             JSONObject cur = response.getJSONObject(i);
-            if (cur.getInt("currencyCodeA") == USD_CODE) {
+            if (cur.getInt("currencyCodeA") == USD_CODE && cur.getInt("currencyCodeB") == HRV_CODE) {
                 long ts = cur.getLong("date") * 1000;
                 Date date = new Date(ts);
                 float price = cur.getFloat("rateBuy");
                 usdUpdated = isRateUpdated(usdRates, date, price, USD, mono);
-            } else if (cur.getInt("currencyCodeA") == EUR_CODE) {
+            } else if (cur.getInt("currencyCodeA") == EUR_CODE && cur.getInt("currencyCodeB") == HRV_CODE) {
                 long ts = cur.getLong("date") * 1000;
                 Date date = new Date(ts);
                 float price = cur.getFloat("rateBuy");

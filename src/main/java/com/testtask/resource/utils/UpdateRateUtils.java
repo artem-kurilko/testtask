@@ -7,6 +7,8 @@ import com.testtask.service.RateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -20,13 +22,15 @@ public class UpdateRateUtils {
     }
 
     public static boolean isRateUpdated(List<Rate> rates, Date date, float price, Currency currency, BankName bankName) {
-        Rate dbRate = rates.stream().filter(rate -> rate.getDate().equals(date)).findAny().orElse(null);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(date);
+        Rate dbRate = rates.stream().filter(rate -> rate.getDate().equals(dateStr)).findAny().orElse(null);
 
         if (dbRate == null) {
             Rate rate = Rate.builder()
                     .price(price)
                     .symbol(currency)
-                    .date(date)
+                    .date(dateStr)
                     .bankName(bankName)
                     .build();
             rateService.saveRate(rate);

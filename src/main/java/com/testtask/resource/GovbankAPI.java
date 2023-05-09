@@ -39,11 +39,6 @@ public class GovbankAPI implements ExchangeAPI {
     }
 
     @Override
-    public List<Rate> getRates() {
-        return rateService.findRatesByExchange(govbank);
-    }
-
-    @Override
     public void updateRates() {
         List<Rate> usdRates = rateService.findRatesByNameAndExchange(USD, govbank);
         updateRatesBySymbol(USD, usdRates);

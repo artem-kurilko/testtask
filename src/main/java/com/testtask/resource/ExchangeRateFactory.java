@@ -2,7 +2,6 @@ package com.testtask.resource;
 
 import com.testtask.model.Exchange;
 import com.testtask.model.Rate;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +25,6 @@ public class ExchangeRateFactory {
         this.monobankAPI = monobankAPI;
         this.govbankAPI = govbankAPI;
         this.privat24API = privat24API;
-    }
-
-    public static void main(String[] args) {
-        LocalDate ld = LocalDate.now();
-        Date date = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        System.out.println(date);
     }
 
     public List<Exchange> getCurrentRates() {
