@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class CurrenciesRateController {
     }
 
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Exchange>> getAvgRatesByDate(@RequestParam String startDate, @RequestParam String finishDate) {
+    public ResponseEntity<List<Exchange>> getAvgRatesByDate(@RequestParam String startDate, @RequestParam String finishDate) throws ParseException {
         List<Exchange> currenciesRates = exchangeRateFactory.getRatesByDate(startDate, finishDate);
         return new ResponseEntity<>(currenciesRates, HttpStatus.OK);
     }

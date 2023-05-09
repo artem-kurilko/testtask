@@ -58,21 +58,20 @@ public class GovbankAPI implements ExchangeAPI {
         String finishDate = sdf.format(new Date());
         String url = String.format(
                 "https://bank.gov.ua/NBU_Exchange/exchange_site?start=%s&end=%s&valcode=%s&sort=exchangedate&json", startDate, finishDate, currency.name().toLowerCase());
-
         JSONArray response = new JSONArray(sendRequest(url));
-        final String pattern = "dd.MM.yyyy";
-        final SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        final String govPattern = "dd.MM.yyyy";
+        final SimpleDateFormat formatter = new SimpleDateFormat(govPattern);
 
         for (int i = 0; i < response.length(); i++) {
             JSONObject cur = response.getJSONObject(i);
-            String exchangedate = cur.getString("exchangedate");
-            Date date = formatter.parse(exchangedate);
+            String exchangeDate = cur.getString("exchangedate");
+            Date date = formatter.parse(exchangeDate);
             float price = cur.getFloat("rate");
             isRateUpdated(rates, date, price, currency, govbank);
         }
     }
 
-    private String getStartDate() {
+    private static String getStartDate() {
         LocalDate ld = LocalDate.now().minusDays(MAX_AMOUNT_OF_DAYS_TO_STORE);
         Date date = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return sdf.format(date);

@@ -49,7 +49,7 @@ public class Privat24API implements ExchangeAPI {
         List<Rate> usdRates = rateService.findRatesByNameAndExchange(USD, privat24);
         List<Rate> eurRates = rateService.findRatesByNameAndExchange(EUR, privat24);
 
-        for (int i = MAX_AMOUNT_OF_DAYS_TO_STORE; i > 0; i--) {
+        for (int i = 0; i < MAX_AMOUNT_OF_DAYS_TO_STORE; i++) {
             String link = url + getDateParameter(i);
             JSONObject response = new JSONObject(sendRequest(link));
             JSONArray responseRates = response.getJSONArray("exchangeRate");

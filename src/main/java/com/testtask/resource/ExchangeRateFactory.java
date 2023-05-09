@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -27,9 +28,16 @@ public class ExchangeRateFactory {
         this.privat24API = privat24API;
     }
 
+    public static void main(String[] args) {
+        LocalDate ld = LocalDate.now();
+        Date date = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        System.out.println(date);
+    }
+
     public List<Exchange> getCurrentRates() {
         LocalDate ld = LocalDate.now();
         Date date = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
         List<Rate> monoRates = monobankAPI.getTodayRates(date);
         List<Rate> govbankRates = govbankAPI.getTodayRates(date);
         List<Rate> privat24Rates = privat24API.getTodayRates(date);
@@ -39,8 +47,7 @@ public class ExchangeRateFactory {
                 new Exchange("privat24", privat24Rates));
     }
 
-    @SneakyThrows
-    public List<Exchange> getRatesByDate(String startDate, String finishDate) {
+    public List<Exchange> getRatesByDate(String startDate, String finishDate) throws ParseException {
         Date start = sdf.parse(startDate);
         Date finish = sdf.parse(finishDate);
 
