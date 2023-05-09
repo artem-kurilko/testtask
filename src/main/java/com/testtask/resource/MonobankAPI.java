@@ -26,6 +26,11 @@ public class MonobankAPI implements ExchangeAPI{
     }
 
     @Override
+    public List<Rate> getTodayRates(Date date) {
+        return rateService.findRatesByDateAndExchange(date, mono);
+    }
+
+    @Override
     public List<Rate> getRates() {
         return rateService.findRatesByExchange(mono);
     }

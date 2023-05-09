@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,7 +25,13 @@ public class CurrenciesRateController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Exchange>> getAvgRates() {
-        List<Exchange> currenciesRates = exchangeRateFactory.getAllCurrencies();
+        List<Exchange> currenciesRates = exchangeRateFactory.getCurrentRates();
+        return new ResponseEntity<>(currenciesRates, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Exchange>> getAvgRatesByDate(@RequestParam String startDate, @RequestParam String finishDate) {
+        List<Exchange> currenciesRates = exchangeRateFactory.getRatesByDate(startDate, finishDate);
         return new ResponseEntity<>(currenciesRates, HttpStatus.OK);
     }
 

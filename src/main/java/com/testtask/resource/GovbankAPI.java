@@ -34,6 +34,11 @@ public class GovbankAPI implements ExchangeAPI {
     }
 
     @Override
+    public List<Rate> getTodayRates(Date date) {
+        return rateService.findRatesByDateAndExchange(date, govbank);
+    }
+
+    @Override
     public List<Rate> getRates() {
         return rateService.findRatesByExchange(govbank);
     }
